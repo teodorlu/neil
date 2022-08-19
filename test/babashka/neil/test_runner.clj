@@ -21,3 +21,9 @@
         {:keys [:fail :error]} test-results]
     (when (pos? (+ fail error))
       (throw (ex-info "Tests failed" {:babashka/exit 1})))))
+
+(defn run-only
+  {:org.babashka/cli {:coerce {:only [:symbol]}
+                      :args->opts (repeat :only)}}
+  [{:keys [only]}]
+  (prn {:only only}))

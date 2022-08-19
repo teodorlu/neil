@@ -30,6 +30,9 @@
          tests {:depends [gen-script]
                 :requires ([babashka.neil.test-runner])
                 :task (exec 'babashka.neil.test-runner/run-tests)}
+         test-only {:depends [gen-script]
+                    :requires ([babashka.neil.test-runner])
+                    :task (exec 'babashka.neil.test-runner/run-only)}
          tests-emacs {:extra-paths ["."]
                       :requires ([tests-emacs :as te])
                       :task (te/run-tests)}
