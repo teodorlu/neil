@@ -26,4 +26,7 @@
   {:org.babashka/cli {:coerce {:only [:symbol]}
                       :args->opts (repeat :only)}}
   [{:keys [only]}]
-  (prn {:only only}))
+  (doseq [test-sym only]
+    (let [t (requiring-resolve test-sym)]
+      (assert t)
+      (t))))
