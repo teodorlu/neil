@@ -620,7 +620,7 @@ Examples:
                                             (if latest
                                               (merge dep {:latest latest})
                                               (binding [*out* *err* *print-namespace-maps* false]
-                                                (println "Warning: no latest version found for dep" (pr-str dep)))))))
+                                                (println "Warning: no latest version found for dep:" (pr-str dep)))))))
                            ;; keep if :latest version was found
                            (filter (fn [dep] (some? (:latest dep)))))]
     (when lib
