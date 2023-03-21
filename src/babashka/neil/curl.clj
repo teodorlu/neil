@@ -26,7 +26,7 @@
   ([url] (curl-get-json url nil))
   ([url opts]
    (let [response    (curl/get url (merge curl-opts opts))
-         inject-crash-fn (fn [s] (if (= "teodorlu" (System/getenv "USER")) "<html></html>" s)) ;; do not merge this to master!
+         inject-crash-fn (fn [s] (if (System/getenv "NEIL_CURL_FORCE_ERROR") "<html></html>" s)) ;; do not merge this to master!!!
          parsed-body (try (-> response :body inject-crash-fn (cheshire/parse-string true))
                           (catch Exception e
                             (binding [*out* *err*]
