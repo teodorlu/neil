@@ -26,7 +26,8 @@
   ([url] (curl-get-json url nil))
   ([url opts]
    (let [response    (curl/get url (merge curl-opts opts))
-         parsed-body (try (-> response :body (cheshire/parse-string true))
+         inject-crash-fn (fn [s] (if (= "teodorlu" (System/getenv "USER")) "<html></html>" s)) ;; do not merge this to master!
+         parsed-body (try (-> response :body inject-crash-fn (cheshire/parse-string true))
                           (catch Exception e
                             (binding [*out* *err*]
                               (println "Unable to parse body as JSON:")
