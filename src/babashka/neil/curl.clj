@@ -31,7 +31,7 @@
                           (catch Exception e
                             (binding [*out* *err*]
                               (println "Unable to parse body as JSON:")
-                              (println (-> response :body)))))]
+                              (println (-> response :body inject-crash-fn)))))]
      (cond
        (nil? response) nil
        (and (= 403 (:status response))
