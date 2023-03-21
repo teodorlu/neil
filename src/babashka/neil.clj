@@ -619,8 +619,8 @@ Examples:
                            (map (fn [dep] (let [latest (dep->latest dep)]
                                             (if latest
                                               (merge dep {:latest latest})
-                                              (binding [*out* *err*]
-                                                (println "Warning: no latest version found for dep:" (pr-str dep)))))))
+                                              (binding [*out* *err* *print-namespace-maps* false]
+                                                (println "Warning: no latest version found for dep" (pr-str dep)))))))
                            ;; keep if :latest version was found
                            (filter (fn [dep] (some? (:latest dep)))))]
     (when lib
