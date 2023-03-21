@@ -31,9 +31,9 @@
                           (catch Exception e
                             (binding [*out* *err*]
                               (println "Unable to parse body as JSON:")
-                              (println (-> response :body)))
-                            (throw e)))]
+                              (println (-> response :body)))))]
      (cond
+       (nil? response) nil
        (and (= 403 (:status response))
             (string/includes? url "api.github")
             (string/includes? (:message parsed-body) "rate limit"))
