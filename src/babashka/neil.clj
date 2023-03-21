@@ -616,7 +616,11 @@ Examples:
         alias         (some-> opts :alias)
         deps-to-check (opts->specified-deps opts)
         upgrades      (->> deps-to-check
-                           (map (fn [dep] (merge dep {:latest (dep->latest dep)})))
+                           (map (fn [dep] (let [latest (dep->latest dep)]
+                                            (if latest
+                                              (merge dep {:latest latest})
+                                              (binding [*out* *err*]
+                                                (println "Warning: no latest version found for dep:" (pr-str dep)))))))
                            ;; keep if :latest version was found
                            (filter (fn [dep] (some? (:latest dep)))))]
     (when lib
