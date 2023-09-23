@@ -396,17 +396,25 @@ chmod +x bin/kaocha
                              (not (contains? existing-aliases alias)))
                       [:aliases alias]
                       path)
-            ;; force newline in
-            ;; [:deps as] if no alias
-            ;; [:aliases alias] if alias DNE
-            ;; [:aliases alias :deps as] if :deps present
-            ;; [:aliases alias :extra-deps as] if alias exists
-            edn-nodes (-> edn-nodes (r/assoc-in nl-path nil) str r/parse-string)
+            _ (println edn-nodes)
+            edn-nodes (if (r/get-in edn-nodes nl-path)
+                        ;; if this dep already exists, don't touch it.
+                        ;; We risk loosing :exclusions and other properties.
+                        edn-nodes
+                        ;; otherwise, force newlines!
+                        ;; force newline in
+                        ;;
+                        ;;     [:deps as] if no alias
+                        ;;     [:aliases alias] if alias DNE
+                        ;;     [:aliases alias :deps as] if :deps present
+                        ;;     [:aliases alias :extra-deps as] if alias exists
+                        (-> edn-nodes (r/assoc-in nl-path nil) str r/parse-string))
+            _ (println edn-nodes)
             nodes (cond
                     missing? edn-nodes
                     mvn?
-                    (r/assoc-in edn-nodes path
-                                {:mvn/version version})
+                    (r/assoc-in edn-nodes (conj path :mvn/version)
+                                version)
                     git-sha?
                     ;; multiple steps to force newlines
                     (-> edn-nodes
@@ -426,6 +434,7 @@ chmod +x bin/kaocha
                         r/parse-string
                         (r/assoc-in (conj path :git/sha)
                                     (some-> version :commit :sha (subs 0 7)))))
+            _ (println nodes)
             nodes (if-let [root (and (or git-sha? git-tag?) (:deps/root opts))]
                     (-> nodes
                         (r/assoc-in (conj path :deps/root) root))
