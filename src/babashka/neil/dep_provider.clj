@@ -28,3 +28,11 @@
 ;; I don't like having to touch files in unit tests. I'd prefer to work on an
 ;; abstraction that represents project files, including deps.edn. Then be able
 ;; to serialize those changes.
+
+;; Q: Should this be done now?
+;;
+;; I'm having a hard time finding motivation to start work right now. Do we need
+;; it? Will we get it merged?
+;;
+;; In general, I don't favor refactoring for refactoring's sake. Perhaps I
+;; should try fix some real problems instead.
