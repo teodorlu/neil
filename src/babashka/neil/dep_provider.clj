@@ -21,3 +21,10 @@
 ;; testable, and easier to read.
 
 ;; (defprotocol DepProvider ,,,)
+
+;; Q: What about our scripts? They still rely (a lot) on editing real files on
+;; disk. Is that a good idea?
+;;
+;; I don't like having to touch files in unit tests. I'd prefer to work on an
+;; abstraction that represents project files, including deps.edn. Then be able
+;; to serialize those changes.
